@@ -3,11 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Contact Photo Jump support for help with installation, activation, or using the Firefox extension.">
+  <meta name="description" content="Photo Jump for Firefox support: installation, license activation, subscriptions, and contact form.">
   <title>Support — Photo Jump for Firefox</title>
   <style>
     :root { color-scheme: dark; }
     * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
     body { margin: 0; background: #07111f; color: #edf4ff; font: 16px/1.6 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
     .wrap { width: min(100% - 32px, 760px); margin: 0 auto; padding: 32px 0 64px; }
     a { color: #a8c7ff; }
@@ -21,13 +22,20 @@
     .form-group { margin-bottom: 20px; }
     label { display: block; font-weight: 650; margin-bottom: 7px; }
     input, select, textarea { display: block; width: 100%; border: 1px solid #526f92; border-radius: 10px; background: #081629; color: #fff; padding: 12px 14px; font: inherit; }
-    input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid #a8c7ff; outline-offset: 3px; }
+    input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid #a8c7ff; outline-offset: 3px; }
     textarea { min-height: 145px; resize: vertical; }
     button { display: block; width: 100%; border: 0; border-radius: 11px; background: #6e4af2; color: white; font: inherit; font-weight: 750; padding: 14px 18px; cursor: pointer; }
     button:hover { background: #8264ff; }
+    button:disabled { opacity: .75; cursor: wait; }
     .note { color: #b5c8db; font-size: 14px; line-height: 1.5; margin-top: 14px; }
+    .feedback { margin: 14px 0 0; padding: 12px 14px; border-radius: 10px; background: #402c32; border: 1px solid #9a6970; color: #fff; }
+    .success { border-color: #307c68; background: #102c30; }
     .tips { padding-left: 20px; margin: 0; }
     .tips li + li { margin-top: 8px; }
+    details { padding: 14px 0; border-top: 1px solid #29425e; }
+    details:first-of-type { border-top: 0; }
+    summary { cursor: pointer; font-weight: 700; }
+    details p { margin: 10px 0 0; color: #c9d8eb; }
     footer { margin-top: 28px; font-size: 14px; color: #a8bacf; }
     footer a + a { margin-left: 16px; }
   </style>
@@ -36,11 +44,36 @@
   <main class="wrap">
     <a class="back" href="index.html">← Back to Photo Jump</a>
     <h1>Photo Jump Support</h1>
-    <p class="intro">Need help installing Photo Jump, activating your license, or finding older Facebook photos? Send a message using the form below.</p>
+    <p class="intro">Help with installation, license activation, and finding older Facebook photos.</p>
+
+    <section class="card" aria-labelledby="quick-heading">
+      <h2 id="quick-heading">Quick answers</h2>
+      <details>
+        <summary>How do I install Photo Jump?</summary>
+        <p>Open your Lemon Squeezy order receipt, download the signed XPI and included instructions, then open the XPI in desktop Firefox and approve the installation.</p>
+      </details>
+      <details>
+        <summary>How do I activate my license?</summary>
+        <p>Open a supported Facebook photo page in Firefox. When Photo Jump asks, enter the license key provided with your Lemon Squeezy order.</p>
+      </details>
+      <details>
+        <summary>How do I find older photos?</summary>
+        <p>On a supported Facebook photo collection, choose a month and year and press <strong>Start here</strong>.</p>
+      </details>
+      <details>
+        <summary>How do I cancel my subscription?</summary>
+        <p>Use <strong>Manage Subscription</strong> from your Lemon Squeezy order email or order portal. Check that your cancellation was confirmed there.</p>
+      </details>
+      <details>
+        <summary>Does Photo Jump work on phones or other browsers?</summary>
+        <p>The currently sold extension is for desktop Firefox. It does not work inside the Facebook mobile app.</p>
+      </details>
+    </section>
 
     <section class="card" aria-labelledby="contact-heading">
-      <h2 id="contact-heading">Contact support</h2>
-      <form action="https://formspree.io/f/xdeezrdj" method="POST">
+      <h2 id="contact-heading">Still need help? Send us a message</h2>
+      <p class="muted">Some questions get an automatic email reply. More complicated matters may need personal attention.</p>
+      <form id="photojump-support-form" action="https://formspree.io/f/xdeezrdj" method="POST">
         <div class="form-group">
           <label for="support-name">Your name</label>
           <input id="support-name" name="name" type="text" autocomplete="name" maxlength="120" required>
@@ -62,24 +95,59 @@
         </div>
         <div class="form-group">
           <label for="support-message">Your message</label>
-          <textarea id="support-message" name="message" minlength="10" maxlength="5000" placeholder="Tell us what happened and what you need help with." required></textarea>
+          <textarea id="support-message" name="message" minlength="10" maxlength="5000" placeholder="Describe your question or problem." required></textarea>
         </div>
-        <button type="submit">Send support request</button>
-        <p class="note">Messages are handled through Formspree. Please don't include passwords, full license keys, or payment-card information.</p>
+        <button id="support-submit" type="submit">Send support request</button>
+        <div id="form-error" class="feedback" role="alert" hidden></div>
+        <p class="note"><strong>After submitting:</strong> Replies may come from <strong>photojump.support@gmail.com</strong>. If you don't see a reply, check Spam or Junk and mark genuine replies as <em>Not spam</em>.</p>
+        <p class="note">Don't send passwords, card details, full license keys, private photos, or confidential information. Some routine support questions are processed with AI. Read our <a href="privacy.html">Privacy notice</a>.</p>
       </form>
-    </section>
-
-    <section class="card" aria-labelledby="help-heading">
-      <h2 id="help-heading">Quick help</h2>
-      <ul class="tips">
-        <li><strong>Installing:</strong> Download the XPI file and instructions from your Lemon Squeezy order.</li>
-        <li><strong>Activating:</strong> Enter the license key provided with your order when Photo Jump asks for it.</li>
-        <li><strong>Finding photos:</strong> Open a supported Facebook photo page in Firefox, choose a month and year, and press <strong>Start here</strong>.</li>
-        <li><strong>Subscriptions:</strong> Use the <strong>Manage Subscription</strong> link in your Lemon Squeezy receipt or order page to manage renewals.</li>
-      </ul>
+      <div id="form-success" class="feedback success" role="status" tabindex="-1" hidden>
+        <h2>Message received</h2>
+        <p>Your support request was submitted successfully. Please check the email address you entered for a reply from <strong>photojump.support@gmail.com</strong>. If you don't see it, check Spam or Junk.</p>
+        <p>Some questions may need a person to review them. A reply is not guaranteed immediately.</p>
+        <a href="support.html">Send another support request</a>
+      </div>
     </section>
 
     <footer><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></footer>
   </main>
+  <script>
+    (function () {
+      const form = document.getElementById('photojump-support-form');
+      const button = document.getElementById('support-submit');
+      const errorBox = document.getElementById('form-error');
+      const successBox = document.getElementById('form-success');
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        if (button.disabled) return;
+        button.disabled = true;
+        button.textContent = 'Sending...';
+        errorBox.hidden = true;
+        try {
+          const result = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+          });
+          if (!result.ok) {
+            if (result.status === 429) {
+              throw new Error('Too many requests right now. Please try again later.');
+            }
+            throw new Error('Your message could not be sent. Please check your information and try again.');
+          }
+          form.hidden = true;
+          successBox.hidden = false;
+          successBox.focus();
+        } catch (error) {
+          errorBox.textContent = error.message || 'There was a connection problem. Please try again.';
+          errorBox.hidden = false;
+        } finally {
+          button.disabled = false;
+          button.textContent = 'Send support request';
+        }
+      });
+    }());
+  </script>
 </body>
 </html>
